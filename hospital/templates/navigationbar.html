@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <title>Hospital Management System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}" type="text/css">
+
+    <!-- jQuery (Only Loaded Once) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.1/css/buttons.dataTables.css">
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.1/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.1/js/buttons.html5.min.js"></script>
+
+    <!-- DataTables Initialization -->
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    { extend: 'copyHtml5', text: 'Copy' },
+                    { extend: 'excelHtml5', text: 'Excel' },
+                    { extend: 'csvHtml5', text: 'CSV' },
+                    { extend: 'pdfHtml5', text: 'PDF' }
+                ],
+                responsive: true
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container">
+            <a href="#" class="navbar-brand">Hospital Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="myMenu" class="collapse navbar-collapse">
+                <ul class="navbar-nav text-center ml-auto">
+                    {% if not request.user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"> <i class="fas fa-home"></i>
+                            Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"><i class="fas fa-address-card">
+                            </i> About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"><i
+                                class="fas fa-address-book"></i> Contact</a></li>
+                    {% endif %}
+                    {% if request.user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"> <i class="fas fa-home"></i>
+                            Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Doctor</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'add_doctor' %}">Add Doctor</a>
+                            <a class="dropdown-item" href="{% url 'view_doctor' %}">View Doctor</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Patient</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'add_patient' %}">Add Patient</a>
+                            <a class="dropdown-item" href="{% url 'view_patient' %}">View Patient</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Appointment</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'add_appointment' %}">Add Appointment</a>
+                            <a class="dropdown-item" href="{% url 'view_appointment' %}">View Appointment</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dynamic Content -->
+    {% block body %}
+    {% endblock %}
+
+    <!-- JavaScript Dependencies (Loaded in Correct Order) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
